@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import CustomCursor from "@/components/ui/CustomCursor";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
         <CustomCursor />
 
         {children}
+        <Analytics />
       </body>
     </html>
   );
