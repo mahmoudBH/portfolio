@@ -1,0 +1,407 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════════ */
+@theme {
+  /* Backgrounds */
+  --color-background:      #080808;
+  --color-surface:         #0e0e0f;
+  --color-surface-2:       #141416;
+
+  /* Text hierarchy — bien lisible */
+  --color-foreground:      #f0f0f0;      /* texte principal */
+  --color-foreground-2:    #b8b8c0;      /* texte secondaire */
+  --color-foreground-3:    #76767e;      /* texte tertiaire / labels */
+  --color-foreground-4:    #44444c;      /* texte décoratif */
+
+  /* Gold system */
+  --color-gold:            #C5A059;
+  --color-gold-light:      #d4b476;
+  --color-gold-dim:        rgba(197, 160, 89, 0.55);
+  --color-gold-subtle:     rgba(197, 160, 89, 0.12);
+  --color-gold-glow:       rgba(197, 160, 89, 0.08);
+
+  /* Borders */
+  --color-border:          rgba(255, 255, 255, 0.07);
+  --color-border-gold:     rgba(197, 160, 89, 0.28);
+
+  /* Glass */
+  --color-glass:           rgba(255, 255, 255, 0.025);
+  --color-glass-border:    rgba(255, 255, 255, 0.06);
+
+  /* Accent */
+  --color-primary:         #f0f0f0;
+  --color-secondary:       #b8b8c0;
+  --color-accent:          #C5A059;
+
+  /* Typography */
+  --font-sans:    var(--font-inter),     ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-cormorant), ui-serif, Georgia, Cambria, serif;
+  --font-mono:    var(--font-dm-mono),   ui-monospace, "Courier New", monospace;
+
+  /* Spacing scale fine-tuned */
+  --spacing-section: 10rem;
+  --spacing-section-md: 7rem;
+
+  /* Transitions */
+  --ease-luxury: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══════════════════════════════════════════════
+   BASE RESET & TYPOGRAPHY
+═══════════════════════════════════════════════ */
+@layer base {
+  :root {
+    --background: #080808;
+    --foreground: #f0f0f0;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    cursor: none;
+    font-size: 16px;                  /* base fixe */
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+
+  html, body {
+    width: 100%;
+    min-height: 100%;
+  }
+
+  /* ── HEADINGS — taille, lisibilité, contraste ── */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: #f0f0f0;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-weight: 300;
+  }
+
+  /* ── PARAGRAPHES — jamais trop petits ── */
+  p {
+    color: #b8b8c0;
+    line-height: 1.85;
+    font-size: clamp(0.875rem, 1.1vw, 1rem);  /* min 14px, jamais moins */
+  }
+
+  /* ── MONO — lisible partout ── */
+  .font-mono,
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;              /* plancher lisible pour le mono */
+    letter-spacing: 0.04em;
+  }
+
+  /* ── LIENS ── */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* ── SELECTION OR ── */
+  ::selection {
+    background-color: rgba(197, 160, 89, 0.35);
+    color: #f0f0f0;
+  }
+
+  /* ── SCROLLBAR fine dorée ── */
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(197, 160, 89, 0.35);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(197, 160, 89, 0.6);
+  }
+
+  /* ── INPUTS ── */
+  input, textarea, select, button {
+    font-family: inherit;
+    color: inherit;
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+  }
+
+  /* ── IMG ── */
+  img, video {
+    max-width: 100%;
+    display: block;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   TYPOGRAPHY SCALE — classes globales
+═══════════════════════════════════════════════ */
+@layer components {
+
+  /* Eyebrow label — section tags */
+  .label-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+
+  /* Display — titres géants */
+  .text-display {
+    font-family: var(--font-display);
+    font-weight: 300;
+    text-transform: uppercase;
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    color: #f0f0f0;
+  }
+
+  /* Body — texte courant, bien lisible */
+  .text-body {
+    font-size: clamp(0.9rem, 1.15vw, 1.05rem);
+    line-height: 1.85;
+    color: #b8b8c0;
+  }
+
+  /* Caption — étiquettes petites (jamais < 0.6rem rendu) */
+  .text-caption {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #76767e;
+  }
+
+  /* Stat number — chiffres Cormorant */
+  .text-stat {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 1;
+    color: var(--color-gold);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   LIGHTING SYSTEM — lueurs globales ambiantes
+═══════════════════════════════════════════════ */
+@layer utilities {
+
+  /* Lueur or — utilisable comme classe utilitaire */
+  .glow-gold {
+    background: radial-gradient(
+      circle,
+      rgba(197, 160, 89, 0.12) 0%,
+      transparent 70%
+    );
+  }
+
+  .glow-gold-strong {
+    background: radial-gradient(
+      circle,
+      rgba(197, 160, 89, 0.22) 0%,
+      transparent 65%
+    );
+  }
+
+  /* Gradient text or */
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #d4b476 0%, #C5A059 50%, #a8884a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass panel */
+  .glass-panel {
+    background: var(--color-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--color-glass-border);
+  }
+
+  /* Grain overlay fixe */
+  .grain-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9000;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+  }
+
+  /* Mask dégradé pour les marquees */
+  .mask-gradient {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 10%,
+      black 90%,
+      transparent
+    );
+  }
+
+  /* Écriture verticale */
+  .vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+  }
+
+  /* Lignes dorées décoratives */
+  .gold-line-h {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      rgba(197, 160, 89, 0.5) 50%,
+      transparent
+    );
+  }
+
+  .gold-line-v {
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      rgba(197, 160, 89, 0.6),
+      transparent
+    );
+  }
+
+  /* Balancement de texte */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Tabular nums pour stats */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   GLOBAL AMBIENT LIGHTING
+   — pseudo-éléments sur body pour lumière ambiante
+═══════════════════════════════════════════════ */
+body::before {
+  content: "";
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(197, 160, 89, 0.055) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  bottom: -10%;
+  right: -15%;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(
+    circle,
+    rgba(100, 130, 180, 0.035) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════════
+   SECTION SPACING UTILITAIRES
+═══════════════════════════════════════════════ */
+@layer utilities {
+  .section-padding {
+    padding-top: clamp(5rem, 10vw, 10rem);
+    padding-bottom: clamp(5rem, 10vw, 10rem);
+  }
+
+  .container-luxury {
+    max-width: 100rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1.5rem, 4vw, 4rem);
+    padding-right: clamp(1.5rem, 4vw, 4rem);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   CURSOR GLOBAL
+═══════════════════════════════════════════════ */
+@layer utilities {
+  .cursor-none-all,
+  .cursor-none-all * {
+    cursor: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   ANIMATION KEYFRAMES GLOBAUX
+═══════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(110%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes goldPulse {
+  0%, 100% { opacity: 0.5; box-shadow: 0 0 4px rgba(197, 160, 89, 0.4); }
+  50%       { opacity: 1;   box-shadow: 0 0 12px rgba(197, 160, 89, 0.7); }
+}
+
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
+  40%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  60%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
