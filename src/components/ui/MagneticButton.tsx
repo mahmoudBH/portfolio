@@ -124,7 +124,7 @@ export default function MagneticButton({
       ref={ref}
       onMouseMove={handleMove}
       onMouseLeave={reset}
-      style={{ x: sx, y: sy }}
+      style={{ x: sx, y: sy, cursor: "none" }}
       whileTap={{ scale: 0.97 }}
       className={cn(
         "group relative overflow-hidden border transition-colors duration-500",
@@ -132,7 +132,6 @@ export default function MagneticButton({
         v.base,
         className
       )}
-      style={{ cursor: "none" }}
       {...props}
     >
       {/* ── FILL SWEEP (monte du bas) ── */}
